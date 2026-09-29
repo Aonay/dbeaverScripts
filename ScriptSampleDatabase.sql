@@ -45,10 +45,41 @@ SELECT c.FirstName ,c.LastName  FROM Customer c INNER JOIN Employee e ON c.First
 
 --Explorando a tabela INVOICE
 
-SELECT * FROM Invoice i LIMIT 10
+SELECT  COUNT(*) as Registros FROM Invoice i 
 
-SELECT * FROM InvoiceLine  LIMIT 10
+SELECT * FROM Invoice i
+
+SELECT * FROM InvoiceLine ORDER BY UnitPrice  DESC   LIMIT 10
+
+SELECT UnitPrice , COUNT(*) AS Record FROM InvoiceLine GROUP BY UnitPrice 
+
+SELECT * FROM InvoiceLine il INNER JOIN Invoice i LIMIT 2;
+
+SELECT * FROM InvoiceLine il INNER JOIN Invoice i ON i.InvoiceId = il.InvoiceId WHERE i.InvoiceId =1
 
 
+-- Aqui eu filtrei pra ver quantas musicas cada cliente comprou
+SELECT c.CustomerId,COUNT(il.TrackId) AS TotalTracks 
+FROM Customer c 
+INNER JOIN Invoice i 
+	ON c.CustomerId = i.CustomerId
+INNER JOIN InvoiceLine il
+	ON i.InvoiceId = il.InvoiceId 
+GROUP BY c.CustomerId, c.FirstName ,c.LastName 
 
-
+-- Como é um sample eu fiquei em duvida pela numeração igual de registros ai filtrei pelo id  e pedi pra ver o nome o id da nota fiscal e i id da musica
+SELECT c.CustomerId,c.FirstName ,c.LastName,i.InvoiceId ,il.TrackId 
+FROM Customer c 
+INNER JOIN Invoice i 
+	ON c.CustomerId = i.CustomerId
+INNER JOIN InvoiceLine il
+	ON i.InvoiceId = il.InvoiceId 
+WHERE c.CustomerId = 1
+GROUP BY i.InvoiceId 
+		
+--Pra ver quantas notas cada cliente tem
+SELECT c.CustomerId,c.FirstName,i.InvoiceId,COUNT(*)AS TotalInvoices
+FROM Customer c 
+INNER JOIN Invoice i 
+	ON c.CustomerId =i.CustomerId 
+GROUP BY c.CustomerId 
